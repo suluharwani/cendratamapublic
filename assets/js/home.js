@@ -1,7 +1,7 @@
 // var loc = window.location;
 // var base_url = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
 
-$(document).ready(function () { 
+(()=>{ 
 $.ajax({
     type : "POST",
     url  : base_url+"home/getSlider",
@@ -41,4 +41,24 @@ $.ajax({
    }
  });
 
-})
+})();
+
+(() => {
+	try {
+  $.ajax({
+    type: "POST",
+    url: base_url + "home/getGroupProduct",
+    async: false,
+    success: function (data) {
+      let d = JSON.parse(data);
+      let view = '<li class="nav-item" data-option-value="*"><a href="#" class="nav-link active">SHOW ALL</a></li>';
+      $.each(d, function (k, v) {
+        view += `<li class="nav-item" data-option-value=".brands"><a class="nav-link text-uppercase" href="#">${d[k].group}</a></li>`;
+      });
+      $('.groupProductList').html(view);
+    }
+  });
+}catch (error) {
+    console.error('Error occurred:', error);
+  }
+})();
